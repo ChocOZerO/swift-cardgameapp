@@ -17,9 +17,9 @@ struct Figure {
         var value: Int {
             switch self {
             case .topMargin:
-                return 20
+                return 40
             case .cardPileTopMargin:
-                return 100
+                return 120
             case .betweenCards:
                 return 15
             }

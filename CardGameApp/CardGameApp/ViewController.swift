@@ -35,6 +35,10 @@ class ViewController: UIViewController {
         configureCardGame()
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+
     private func setNotifications() {
         NotificationCenter.default.addObserver(
             self,

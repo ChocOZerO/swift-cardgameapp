@@ -27,7 +27,6 @@ class MoveController {
 extension MoveController {
     private func move(to target: CGPoint, cardIndexes: CardIndexes, isBack: Bool) {
         let globalPoint = original.cardStackView.convert(original.cardView.frame.origin, to: nil)
-        original.mainView.isUserInteractionEnabled = false
         for index in original.cardPackForDragging.indices {
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 0.5,
@@ -42,7 +41,6 @@ extension MoveController {
                     if !isBack {
                         self.moveCardModel(from: self.original.cardInformation!.indexes, to: cardIndexes)
                     }
-                    self.original.mainView.isUserInteractionEnabled = true
                 }
             )
         }

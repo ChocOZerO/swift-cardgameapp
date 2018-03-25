@@ -59,11 +59,13 @@ class OriginalInformation {
     }
 
     func animationBegan() {
+        mainView.isUserInteractionEnabled = false
         mainView.bringSubview(toFront: self.parentView)
         parentView.bringSubview(toFront: self.cardStackView)
     }
 
     func animationCompletion() {
         parentView.insertSubview(cardStackView, at: cardInformation!.indexes.xIndex)
+        mainView.isUserInteractionEnabled = true
     }
 }
