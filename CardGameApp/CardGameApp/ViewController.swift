@@ -104,10 +104,12 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor(patternImage: UIImage(named: Figure.Image.background.value)!)
     }
     private func getCardLocation(index: Int, topMargin: CGFloat) -> CGRect {
-        return CGRect(origin: CGPoint(x: cardWidth * CGFloat(index) + cardMargin,
-                                      y: topMargin),
-                      size: CGSize(width: cardWidth - CGFloat(Figure.Size.xGap.value) * cardMargin,
-                                   height: cardWidth * cardRatio))
+        let cardWidth = UIScreen.main.bounds.width
+                        / CGFloat(Figure.Count.cardPiles.value)
+                        - CGFloat(Figure.Size.xGap.value)
+        let cardHeight = cardWidth * CGFloat(Figure.Size.ratio.value)
+        return CGRect(x: (cardWidth + CGFloat(Figure.Size.xGap.value)) * CGFloat(index), y: topMargin,
+                      width: cardWidth, height: cardHeight)
     }
     private func configureFoundations() {
         let foundationsViewWidth = UIScreen.main.bounds.width
@@ -163,7 +165,6 @@ class ViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 }
@@ -237,8 +238,8 @@ extension ViewController {
         guard let userInfo = notification.userInfo as? [String: Any] else { return }
         guard let recognizer = userInfo[Keyword.doubleTapped.value] as? UITapGestureRecognizer else { return }
         guard let cardView = recognizer.view as? CardView else { return }
-        guard let original = OriginalInformation.init(cardView: cardView) else { return }
-        moveController = MoveController.init(original: original)
+        guard let original = OriginalInformation(cardView: cardView) else { return }
+        moveController = MoveController(original: original)
         moveController?.doubleTap()
     }
 }
@@ -251,9 +252,8 @@ extension ViewController {
         guard let cardView = recognizer.view as? CardView else { return }
         switch recognizer.state {
         case .began:
-            guard let original = OriginalInformation.init(cardView: cardView) else { return }
-            moveController = MoveController.init(original: original)
-            moveController?.setTargetPoint(at: (cardView.superview?.convert(cardView.frame.origin, to: nil))!)
+            guard let original = OriginalInformation(cardView: cardView) else { return }
+            moveController = MoveController(original: original)
             moveController?.dragBegan()
         case .changed:
             moveController?.dragChanged(with: recognizer)
