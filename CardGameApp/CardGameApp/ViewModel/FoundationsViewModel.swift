@@ -39,10 +39,7 @@ class FoundationsViewModel {
     }
 
     func isSuccess() -> Bool {
-        for cardStack in cardStacks where !(cardStack.count == 13 && (cardStack.last?.isKing())!) {
-            return false
-        }
-        return true
+        return !cardStacks.contains(where: { return !($0.count == 13 && ($0.last?.isKing())!) })
     }
 
 }

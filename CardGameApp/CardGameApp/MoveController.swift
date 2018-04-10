@@ -9,18 +9,16 @@
 import UIKit
 
 class MoveController {
-    private var targetPoint: CGPoint?
+    private var targetPoint: CGPoint!
     private let original: OriginalInformation
     private var dropableInformations: [DropableInformation]?
     private var targetParentModel: Receivable?
 
     init?(original: OriginalInformation) {
         self.original = original
+        self.targetPoint = original.cardStackView.convert(original.cardView.frame.origin, to: nil)
     }
 
-    func setTargetPoint(at targetPoint: CGPoint) {
-        self.targetPoint = targetPoint
-    }
 }
 
 // MARK: Common Logic
@@ -40,6 +38,7 @@ extension MoveController {
                     self.original.animationCompletion()
                     if !isBack {
                         self.moveCardModel(from: self.original.cardInformation!.indexes, to: cardIndexes)
+                        self.checkFinished()
                     }
                 }
             )
@@ -92,9 +91,7 @@ extension MoveController {
 
     // state : .ended
     func dragEnded(at fingerLocation: CGPoint?) {
-        if moved(at: fingerLocation) {
-            checkFinished()
-        } else {
+        if !moved(at: fingerLocation) {
             move(to: targetPoint!, cardIndexes: (original.cardInformation?.indexes)!, isBack: true)
         }
     }
